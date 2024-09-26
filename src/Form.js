@@ -3,14 +3,13 @@ import React,{Component} from "react";
 class Form extends Component {
     constructor(props) {
         super(props);
-        this.initialState = {
-            id: '',
+        this.state = {
+            id: Date.now(),
             firstName: '',
             lastName: '',
             email: '',
             errorMessage: ''
         };
-        this.state = this.initialState;
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -20,60 +19,66 @@ class Form extends Component {
         return null;
     }
 
-    validateForm = () =>{
-        const {firstName, lastName, email} =this.state;
+    validateForm=()=>{
+        const{firstName, lastName, email} = this.state;
+        let formIsValidate = true;
 
         if(!firstName || !lastName || !email){
-            this.setState({errorMessage: 'Все поля должны быть заполнены'})
+            formIsValidate = false;
+            this.setState({errorMessage: 'Заполните все поля!'});
         }
-        this.setState({errorMessage: ''});
+        const emailPattern = /\S+@\S+\.\S+/;
+        if (email && !emailPattern.test(email)){
+            formIsValidate = false;
+            this.setState({errorMessage: 'Введен не корректный формат электронной почты!'})
+        }
+
+        return formIsValidate;
     }
 
 
     onFormSubmit = (event) => {
         event.preventDefault();
 
-        if (this.validateForm()) {
+        if (this.validateForm()){
             this.props.handleSubmit(this.state);
-            this.setState(this.initialState)
+            this.setState({
+                firstName: '',
+                lastName: '',
+                email: '',
+                errorMessage: ''
+            });
         }
 
         // Присваиваем уникальный ID при добавлении
-        const newCharacter = {
-            ...this.state,
-            id: Date.now() // Используем текущую метку времени как уникальный идентификатор
-        };
 
-        this.props.handleSubmit(newCharacter);
-        this.setState(this.initialState);
     }
 
     handleChange = (event) => {
-        const {firstName, value} = event.target;
+        const {name, value} = event.target;
         this.setState({
-            [firstName]: value
+            [name]: value, errorMessage: ''
         });
     }
-
 
     render() {
         const { firstName, lastName, email, errorMessage } = this.state;
 
         return (
             <form onSubmit={this.onFormSubmit}>
-                <label htmlFor="name">First Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input
                     type="text"
-                    name="name"
-                    id="name"
+                    name="firstName"
+                    id="firstName"
                     value={firstName}
                     onChange={this.handleChange} />
 
-                <label htmlFor="job">Last Name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input
                     type="text"
-                    name="job"
-                    id="job"
+                    name="lastName"
+                    id="lastName"
                     value={lastName}
                     onChange={this.handleChange} />
 
@@ -85,7 +90,6 @@ class Form extends Component {
                     value={email}
                     onChange={this.handleChange} />
 
-                {/* Вывод простого сообщения об ошибке */}
                 {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
 
                 <button type="submit">{this.props.editingCharacter ? 'Update' : 'Submit'}</button>

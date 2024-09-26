@@ -11,9 +11,16 @@ class App extends Component {
 
     removeCharacter = id => {
         const { characters } = this.state;
-    
         this.setState({
             characters: characters.filter((character) => character.id !==id)
+        });
+    }
+
+    editCharacter = (index) => {
+        const character = this.state.characters[index];
+        this.setState({
+            editingIndex: index,
+            editingCharacter: character
         });
     }
 
@@ -30,12 +37,27 @@ class App extends Component {
 
 
     handleSubmit = (character) => {
-        this.setState({characters: [...this.state.characters, character]});
+        const { editingIndex, characters } = this.state;
+
+        // Если есть редактируемый персонаж, обновляем его
+        if (editingIndex !== null) {
+            const updatedCharacters = characters.map((item, index) =>
+                index === editingIndex ? character : item
+            );
+            this.setState({
+                characters: updatedCharacters,
+                editingIndex: null,
+                editingCharacter: null
+            });
+        } else {
+            // Если добавляем нового персонажа
+            this.setState({ characters: [...this.state.characters, character] });
+        }
     }
 
 
     render() {
-        const { characters } = this.state;
+        const { characters,editingCharacter } = this.state;
         
         return (
             <div className="container">
@@ -44,9 +66,13 @@ class App extends Component {
                 <Table
                     characterData={characters}
                     removeCharacter={this.removeCharacter}
+                    editCharacter={this.editCharacter}  // Передаем функцию редактирования в Table
                 />
-                <h3>Add New</h3>
-                <Form handleSubmit={this.handleSubmit} />
+                <h3>{this.state.editingIndex !== null ? 'Edit Character' : 'Add New'}</h3>
+                <Form
+                    handleSubmit={this.handleSubmit}
+                    editingCharacter={editingCharacter}  // Передаем данные редактируемого персонажа
+                />
             </div>
         );
     }

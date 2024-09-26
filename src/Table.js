@@ -4,12 +4,22 @@ const TableHeader = () => {
     return (
         <thead>
             <tr>
-                <th>index</th>
-                <th>firstName</th>
-                <th>lastName</th>
+                <th>Index</th>
+                <th>FirstName</th>
+                <th>LastName</th>
                 <th>Email</th>
             </tr>
         </thead>
+    );
+}
+
+const Table = (props) => {
+    const { characterData, removeCharacter } = props;
+    return (
+        <table>
+            <TableHeader />
+            <TableBody characterData={characterData} removeCharacter={removeCharacter} />
+        </table>
     );
 }
 
@@ -18,10 +28,11 @@ const TableBody = (props) => {
         return (
             <tr key={row.id}>
                 <td>{index + 1}</td>
-                <td>{row.name}</td>
-                <td>{row.job}</td>
+                <td>{row.firstName}</td>
+                <td>{row.lastName}</td>
                 <td>{row.email}</td>
                 <td>
+                    <button onClick={() => props.editCharacter(index)}>Edit</button>
                     <button onClick={() => props.removeCharacter(row.id)}>Delete</button>
                 </td>
             </tr>
@@ -31,14 +42,4 @@ const TableBody = (props) => {
     return <tbody>{rows}</tbody>;
 }
 
-const Table = (props) => {
-    const { characterData, removeCharacter } = props;
-        return (
-            <table>
-                <TableHeader />
-                <TableBody characterData={characterData} removeCharacter={removeCharacter} />
-            </table>
-        );
-}
-
-export default Table;
+export default TableBody;
