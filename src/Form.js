@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, {Component} from "react";
 
 class Form extends Component {
     constructor(props) {
@@ -19,16 +19,16 @@ class Form extends Component {
         return null;
     }
 
-    validateForm=()=>{
-        const{firstName, lastName, email} = this.state;
+    validateForm = () => {
+        const {firstName, lastName, email} = this.state;
         let formIsValidate = true;
 
-        if(!firstName || !lastName || !email){
+        if (!firstName || !lastName || !email) {
             formIsValidate = false;
             this.setState({errorMessage: 'Заполните все поля!'});
         }
         const emailPattern = /\S+@\S+\.\S+/;
-        if (email && !emailPattern.test(email)){
+        if (email && !emailPattern.test(email)) {
             formIsValidate = false;
             this.setState({errorMessage: 'Введен не корректный формат электронной почты!'})
         }
@@ -36,11 +36,10 @@ class Form extends Component {
         return formIsValidate;
     }
 
-
     onFormSubmit = (event) => {
         event.preventDefault();
 
-        if (this.validateForm()){
+        if (this.validateForm()) {
             this.props.handleSubmit(this.state);
             this.setState({
                 firstName: '',
@@ -62,7 +61,7 @@ class Form extends Component {
     }
 
     render() {
-        const { firstName, lastName, email, errorMessage } = this.state;
+        const {firstName, lastName, email, errorMessage} = this.state;
 
         return (
             <form onSubmit={this.onFormSubmit}>
@@ -72,7 +71,7 @@ class Form extends Component {
                     name="firstName"
                     id="firstName"
                     value={firstName}
-                    onChange={this.handleChange} />
+                    onChange={this.handleChange}/>
 
                 <label htmlFor="lastName">Last Name</label>
                 <input
@@ -80,7 +79,7 @@ class Form extends Component {
                     name="lastName"
                     id="lastName"
                     value={lastName}
-                    onChange={this.handleChange} />
+                    onChange={this.handleChange}/>
 
                 <label htmlFor="email">Email</label>
                 <input
@@ -88,9 +87,9 @@ class Form extends Component {
                     name="email"
                     id="email"
                     value={email}
-                    onChange={this.handleChange} />
+                    onChange={this.handleChange}/>
 
-                {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+                {errorMessage && <div style={{color: 'red'}}>{errorMessage}</div>}
 
                 <button type="submit">{this.props.editingCharacter ? 'Update' : 'Submit'}</button>
             </form>

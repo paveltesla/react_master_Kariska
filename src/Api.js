@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class App extends Component {
     state = {
@@ -9,22 +9,21 @@ class App extends Component {
         fetch('https://api.example.com/characters')
             .then(response => response.json())
             .then(data => {
-                this.setState({ characters: data });
+                this.setState({characters: data});
             })
             .catch(error => console.error('Ошибка при загрузке данных:', error));
     }
 
-
     render() {
-        const { data } = this.state;
+        const {data} = this.state;
 
         const result = data.map((entry, index) => {
             console.log(entry);
             return <li key={index}>{entry}</li>;
         });
 
-        return <div className="container"><ul>{result}</ul></div>;
+        return <div className="container">
+            <ul>{result}</ul>
+        </div>;
     }
 }
-
-export default App;

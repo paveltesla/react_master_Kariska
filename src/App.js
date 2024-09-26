@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Table from './Table';
 import Form from './Form';
 
@@ -10,9 +10,9 @@ class App extends Component {
     };
 
     removeCharacter = id => {
-        const { characters } = this.state;
+        const {characters} = this.state;
         this.setState({
-            characters: characters.filter((character) => character.id !==id)
+            characters: characters.filter((character) => character.id !== id)
         });
     }
 
@@ -27,7 +27,7 @@ class App extends Component {
     componentDidMount() {
         const storedCharacters = JSON.parse(localStorage.getItem('characters'));
         if (storedCharacters) {
-            this.setState({ characters: storedCharacters });
+            this.setState({characters: storedCharacters});
         }
     }
 
@@ -35,9 +35,8 @@ class App extends Component {
         localStorage.setItem('characters', JSON.stringify(this.state.characters));
     }
 
-
     handleSubmit = (character) => {
-        const { editingIndex, characters } = this.state;
+        const {editingIndex, characters} = this.state;
 
         // Если есть редактируемый персонаж, обновляем его
         if (editingIndex !== null) {
@@ -51,14 +50,13 @@ class App extends Component {
             });
         } else {
             // Если добавляем нового персонажа
-            this.setState({ characters: [...this.state.characters, character] });
+            this.setState({characters: [...this.state.characters, character]});
         }
     }
 
-
     render() {
-        const { characters,editingCharacter } = this.state;
-        
+        const {characters, editingCharacter} = this.state;
+
         return (
             <div className="container">
                 <h1>React Tutorial</h1>

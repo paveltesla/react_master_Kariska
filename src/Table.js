@@ -1,24 +1,24 @@
 import React from 'react';
 
-const TableHeader = () => { 
+const TableHeader = () => {
     return (
         <thead>
-            <tr>
-                <th>Index</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Email</th>
-            </tr>
+        <tr>
+            <th>Index</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+        </tr>
         </thead>
     );
 }
 
 const Table = (props) => {
-    const { characterData, removeCharacter } = props;
+    const {characterData, removeCharacter} = props;
     return (
         <table>
-            <TableHeader />
-            <TableBody characterData={characterData} removeCharacter={removeCharacter} />
+            <TableHeader/>
+            <TableBody characterData={characterData} removeCharacter={removeCharacter}/>
         </table>
     );
 }
