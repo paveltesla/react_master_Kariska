@@ -5,8 +5,8 @@ class Form extends Component {
         super(props);
         this.initialState = {
             id: '',
-            name: '',
-            job: '',
+            firstName: '',
+            lastName: '',
             email: '',
             errorMessage: ''
         };
@@ -21,9 +21,9 @@ class Form extends Component {
     }
 
     validateForm = () =>{
-        const {name, job, email} =this.state;
+        const {firstName, lastName, email} =this.state;
 
-        if(!name || !job || !email){
+        if(!firstName || !lastName || !email){
             this.setState({errorMessage: 'Все поля должны быть заполнены'})
         }
         this.setState({errorMessage: ''});
@@ -49,15 +49,15 @@ class Form extends Component {
     }
 
     handleChange = (event) => {
-        const {name, value} = event.target;
+        const {firstName, value} = event.target;
         this.setState({
-            [name]: value
+            [firstName]: value
         });
     }
 
 
     render() {
-        const { name, job, email, errorMessage } = this.state;
+        const { firstName, lastName, email, errorMessage } = this.state;
 
         return (
             <form onSubmit={this.onFormSubmit}>
@@ -66,7 +66,7 @@ class Form extends Component {
                     type="text"
                     name="name"
                     id="name"
-                    value={name}
+                    value={firstName}
                     onChange={this.handleChange} />
 
                 <label htmlFor="job">Last Name</label>
@@ -74,7 +74,7 @@ class Form extends Component {
                     type="text"
                     name="job"
                     id="job"
-                    value={job}
+                    value={lastName}
                     onChange={this.handleChange} />
 
                 <label htmlFor="email">Email</label>
