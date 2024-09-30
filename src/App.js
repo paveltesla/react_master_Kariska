@@ -10,11 +10,14 @@ class App extends Component {
     };
 
     removeCharacter = id => {
-        const {characters} = this.state;
-        this.setState({
-            characters: characters.filter((character) => character.id !== id)
-        });
-    }
+    const { characters } = this.state;
+    
+    // Обновляем состояние, удаляя персонажа с переданным id
+    this.setState({
+        characters: characters.filter(character => character.id !== id)
+    });
+}
+
 
     editCharacter = (index) => {
         const character = this.state.characters[index];
