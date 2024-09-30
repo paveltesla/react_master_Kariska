@@ -9,16 +9,17 @@ class App extends Component {
         editingCharacter: null
     };
 
+    // Функция для удаления персонажа по уникальному id
     removeCharacter = id => {
-    const { characters } = this.state;
-    
-    // Обновляем состояние, удаляя персонажа с переданным id
-    this.setState({
-        characters: characters.filter(character => character.id !== id)
-    });
-}
+        const { characters } = this.state;
 
+        // Обновляем состояние, удаляя персонажа с переданным id
+        this.setState({
+            characters: characters.filter(character => character.id !== id)
+        });
+    }
 
+    // Функция для редактирования персонажа
     editCharacter = (index) => {
         const character = this.state.characters[index];
         this.setState({
@@ -38,8 +39,9 @@ class App extends Component {
         localStorage.setItem('characters', JSON.stringify(this.state.characters));
     }
 
+    // Добавление или обновление персонажа
     handleSubmit = (character) => {
-        const {editingIndex, characters} = this.state;
+        const { editingIndex, characters } = this.state;
 
         // Если есть редактируемый персонаж, обновляем его
         if (editingIndex !== null) {
@@ -52,24 +54,25 @@ class App extends Component {
                 editingCharacter: null
             });
         } else {
-            // Если добавляем нового персонажа
+            // Добавляем нового персонажа с уникальным id
+            character.id = character.id || Date.now();  // Присваиваем уникальный id
             this.setState({characters: [...this.state.characters, character]});
         }
     }
 
     render() {
-        const {characters, editingCharacter} = this.state;
+        const { characters, editingCharacter } = this.state;
 
         return (
             <div className="container">
                 <h1>React Tutorial</h1>
-                <p>Add a character with a name and a job to the table.</p>
+                <p>Add a character with a first name and a last name to the table.</p>
                 <Table
                     characterData={characters}
                     removeCharacter={this.removeCharacter}
                     editCharacter={this.editCharacter}  // Передаем функцию редактирования в Table
                 />
-                <h3>{this.state.editingIndex !== null ? 'Edit Character' : 'Add New'}</h3>
+                <h3>{this.state.editingIndex !== null ? 'Edit Character' : 'Add New Character'}</h3>
                 <Form
                     handleSubmit={this.handleSubmit}
                     editingCharacter={editingCharacter}  // Передаем данные редактируемого персонажа
