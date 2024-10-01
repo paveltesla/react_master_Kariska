@@ -4,7 +4,7 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: Date.now(),
+            id: null,  // Изначально id null, чтобы его устанавливать при создании нового персонажа
             firstName: '',
             lastName: '',
             email: '',
@@ -13,6 +13,7 @@ class Form extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
+        // Проверяем, не совпадают ли id, чтобы обновить state только при редактировании
         if (nextProps.editingCharacter && nextProps.editingCharacter.id !== prevState.id) {
             return nextProps.editingCharacter;
         }
@@ -21,42 +22,47 @@ class Form extends Component {
 
     validateForm = () => {
         const {firstName, lastName, email} = this.state;
-        let formIsValidate = true;
+        let formIsValid = true;
 
         if (!firstName || !lastName || !email) {
-            formIsValidate = false;
+            formIsValid = false;
             this.setState({errorMessage: 'Заполните все поля!'});
         }
         const emailPattern = /\S+@\S+\.\S+/;
         if (email && !emailPattern.test(email)) {
-            formIsValidate = false;
-            this.setState({errorMessage: 'Введен не корректный формат электронной почты!'})
+            formIsValid = false;
+            this.setState({errorMessage: 'Введен некорректный формат электронной почты!'})
         }
 
-        return formIsValidate;
+        return formIsValid;
     }
 
     onFormSubmit = (event) => {
         event.preventDefault();
 
         if (this.validateForm()) {
-            this.props.handleSubmit(this.state);
+            // Если это новый персонаж, добавляем ему уникальный id
+            const characterWithId = {
+                ...this.state,
+                id: this.state.id || Date.now()  // Присваиваем id только если его нет (для новых персонажей)
+            };
+
+            this.props.handleSubmit(characterWithId);
             this.setState({
+                id: null,
                 firstName: '',
                 lastName: '',
                 email: '',
                 errorMessage: ''
             });
         }
-
-        // Присваиваем уникальный ID при добавлении
-
     }
 
     handleChange = (event) => {
         const {name, value} = event.target;
         this.setState({
-            [name]: value, errorMessage: ''
+            [name]: value,
+            errorMessage: ''  // Очищаем ошибку при изменении
         });
     }
 

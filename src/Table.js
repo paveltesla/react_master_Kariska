@@ -14,11 +14,15 @@ const TableHeader = () => {
 }
 
 const Table = (props) => {
-    const {characterData, removeCharacter} = props;
+    const {characterData, removeCharacter, editCharacter} = props;  // Добавляем editCharacter
     return (
         <table>
             <TableHeader/>
-            <TableBody characterData={characterData} removeCharacter={removeCharacter}/>
+            <TableBody
+                characterData={characterData}
+                removeCharacter={removeCharacter}
+                editCharacter={editCharacter}  // Передаём функцию редактирования
+            />
         </table>
     );
 }
@@ -32,7 +36,8 @@ const TableBody = (props) => {
                 <td>{row.lastName}</td>
                 <td>{row.email}</td>
                 <td>
-                    <button onClick={() => props.editCharacter(index)}>Edit</button>
+                    {/* Передаем id вместо index для editCharacter */}
+                    <button onClick={() => props.editCharacter(row.id)}>Edit</button>
                     <button onClick={() => props.removeCharacter(row.id)}>Delete</button>
                 </td>
             </tr>
@@ -42,4 +47,4 @@ const TableBody = (props) => {
     return <tbody>{rows}</tbody>;
 }
 
-export default TableBody;
+export default Table;
